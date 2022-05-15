@@ -10,6 +10,10 @@ Dataset is given
 3. output.txt contains top 50 relevant documents (doc id) for each query.
 
 #### 1. Built an inverted index- dictionary and postings list using standard data structures in Python (Dictionary, Json Formats, List…).
+
+![alt text] (https://github.com/shubham11941140/Search-Engine/blob/main/inverted%20index/tokens.PNG)
+
+
 #### 2. ELasticSearch inverted index construction - https://pypi.python.org/pypi/elasticsearch
 #### 3. NLTK Libraries used for Tokenization/Stemming/Lemmatization - http://www.nltk.org/install.html (Book used: http://www.nltk.org/book)
 #### 4. TF-IDF Scoring performed
