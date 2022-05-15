@@ -1,6 +1,15 @@
 # Search-Engine
 Builds a complete Information Retrieval Engine from scratch
 
+Contains 4 components:
+
+1. Elastic Search
+2. Inverted Index
+3. Document Ranking
+4. Classifier
+
+## Elastic Search
+
 ## Inverted Index
 
 Dataset is given
