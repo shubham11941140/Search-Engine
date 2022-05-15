@@ -10,6 +10,15 @@ Contains 4 components:
 
 ## Elastic Search
 
+1. Set up Elastic Search on GCP (Google Cloud Platform)
+2. Netflix TV Shows Dataset is used - **https://www.kaggle.com/datasets/shivamb/netflix-shows**
+
+3. Docs Preprocessing to Run Queries - **https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html**
+
+#### Queries written to extract information the Elastic Search Index
+
+#### Questions are mentioned in the folder ReadMe
+
 ## Inverted Index
 
 Dataset is given
