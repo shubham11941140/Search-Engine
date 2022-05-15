@@ -74,5 +74,31 @@ Contrasted 3 models after generating tokens and creating inverted index
 
 ![image](https://user-images.githubusercontent.com/63910248/168475219-d90e0ee7-1e2c-4909-8196-e05ba741f24e.png)
 
+## Classifier
+
+Developed 3 classifiers to classify documents based on queries assigned.
+
+### GROUND TRUTH Labels have been Pre-Assigned 
+
+ 1. **70 % Random shuffled selection for training and 30 % for testing**
+ 2. **Rocchio Classifier**
+ 3. **KNN Classifier (K = 1, 3 and 5)**
+ 4. **Precision, Recall, F1 Score Accuracy is reported**
+ 
+ ### Rocchio Metrics
+
+ ![image](https://user-images.githubusercontent.com/63910248/168483909-29d11ce3-0641-4d10-a818-03beff5d5d10.png)
+
+ ### KNN Metrics (K = 1)
+ 
+ ![image](https://user-images.githubusercontent.com/63910248/168483993-199f8b19-0ea6-4086-af2b-298bd2536b11.png)
+
+ ### KNN Metrics (K = 3)
+ 
+ ![image](https://user-images.githubusercontent.com/63910248/168484006-ea8dd036-49b0-4516-a530-a6b44a3a2e72.png)
+ 
+  ### KNN Metrics (K = 5)
+ 
+ ![image](https://user-images.githubusercontent.com/63910248/168484011-86b8bee5-2373-4b9f-b75b-0823e6ea4696.png)
 
 
