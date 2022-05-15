@@ -11,7 +11,8 @@ Dataset is given
 
 #### 1. Built an inverted index- dictionary and postings list using standard data structures in Python (Dictionary, Json Formats, List…).
 
-![alt text] (https://github.com/shubham11941140/Search-Engine/blob/main/inverted%20index/tokens.PNG)
+![tokens](https://user-images.githubusercontent.com/63910248/168473897-f0a6f24a-edd9-4e29-9c55-d5a1ee98a4e3.PNG)
+
 
 
 #### 2. ELasticSearch inverted index construction - https://pypi.python.org/pypi/elasticsearch
