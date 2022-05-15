@@ -40,3 +40,39 @@ Dataset is given
 ![time taken](https://user-images.githubusercontent.com/63910248/168473959-f047fd08-0e9d-41fa-af30-cdb75ef6268a.PNG)
 
 ![MAP](https://user-images.githubusercontent.com/63910248/168473961-9d567955-f9db-4f8d-b211-da34404b54cb.PNG)
+
+## Document Ranking
+
+Contrasted 3 models after generating tokens and creating inverted index
+
+![image](https://user-images.githubusercontent.com/63910248/168475380-51375a5b-40a5-4ed6-89d4-f769aad685db.png)
+
+1. **TF-IDF**
+
+![image](https://user-images.githubusercontent.com/63910248/168475302-50aea55b-55d9-403d-9618-915a1ef1e398.png)
+
+2. **Binary Independence Model (BIM)**
+
+![image](https://user-images.githubusercontent.com/63910248/168475262-cf2886b7-5d5c-4b4a-b42c-77f4681ad41a.png)
+
+3. **Language Model (Unigram)**
+
+![image](https://user-images.githubusercontent.com/63910248/168475238-bc87adbb-6f19-40c7-83eb-e0196d16fd96.png)
+
+#### Metrics Plotted ![image](https://user-images.githubusercontent.com/63910248/168475416-e1817a65-1fd0-40b0-aa9c-0906ff8add07.png)
+
+
+#### Precision
+
+![image](https://user-images.githubusercontent.com/63910248/168475143-2377c607-7e5b-42fc-b9a9-c368eeaee533.png)
+
+#### Recall
+
+![image](https://user-images.githubusercontent.com/63910248/168475173-a56866bc-2745-4b08-a81b-c64041cbe029.png)
+
+#### Mean Average Precision
+
+![image](https://user-images.githubusercontent.com/63910248/168475219-d90e0ee7-1e2c-4909-8196-e05ba741f24e.png)
+
+
+
