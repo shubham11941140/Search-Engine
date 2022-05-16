@@ -3,10 +3,20 @@ Builds a complete Information Retrieval Engine from scratch
 
 Contains 4 components:
 
-1. Elastic Search
-2. Inverted Index
-3. Document Ranking
-4. Classifier
+1. Crawling and Index Construction
+2. Elastic Search
+3. Inverted Index
+4. Document Ranking
+5. Classifier
+
+## Crawling and Index Construction
+
+1. **Constructed an index by crawling top 20 web pages from Google against a given set of queries (Queries are in the folder ReadMe)**
+**Extracted first 3 paragraphs from these web pages and stored them in files and built an inverted index on all documents**
+
+2. **Implemented a merge algorithm to intersect the posting list of 2 terms based on a given set of boolean queries. Extended to perform restrictive merging in multiple terms**
+3. 
+
 
 ## Elastic Search
 
