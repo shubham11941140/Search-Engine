@@ -13,10 +13,19 @@ Contains 4 components:
 
 1. **Constructed an index by crawling top 20 web pages from Google against a given set of queries (Queries are in the folder ReadMe)**
 **Extracted first 3 paragraphs from these web pages and stored them in files and built an inverted index on all documents**
+2. **Implemented a merge algorithm to intersect the posting list of 2 terms based on a given set of boolean queries. Extended to perform restrictive merging in multiple terms (Boolean queries are given in the folder ReadMe)**
+3. **Added skip pointers by add pointers at even-distances of sqrt(P) if the length of posting list is P. Contrasted the execution of queries when executed on indexes with and without skip pointers.**
+4. **Performed TF-IDF scoring on the retrieved results.**
 
-2. **Implemented a merge algorithm to intersect the posting list of 2 terms based on a given set of boolean queries. Extended to perform restrictive merging in multiple terms**
-3. 
+   #### The Vector Space Model (VSM) scoring was used.
+   #### The TF is calculated as: TF = (Number of times term occurs in document) / (Total number of terms in document)
+   #### The IDF is calculated as: IDF = Logarithm ((Total Number of Documents) / (Number of documents containing the term))
 
+### Results are stored in documents withing the same folder. CSV file is attached to give a description of results corresponding to each document. 
+
+#### Code execution image results attached in the folder and attached in folder ReadMe. Preview attached
+
+![1](https://user-images.githubusercontent.com/63910248/168537711-82c06bad-aaf6-4835-82a4-684c8f10e985.PNG)
 
 ## Elastic Search
 
