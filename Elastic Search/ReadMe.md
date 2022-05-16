@@ -4,6 +4,8 @@
 
 **Pre processing of input data (netflix_titles.csv) is done using csv_update.py python script attached and then updated csv file was used to create the index in elastic search cloud.**
 
+### kibana.txt: Documentation to help write Elastic Search queries: https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html
+
 Questions for which queries are written and outputs are processed. 
 
 #### All outputs are inside the es file and can be referred, few previews are attached
