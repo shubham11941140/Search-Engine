@@ -1,0 +1,578 @@
+# Documentation :
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/index.html
+
+# This is the Kibana Dev Tools console. We can use this to interact with Elasticsearch
+
+# Elasticsearch stores documents using the JSON format
+# This is a sample JSON document
+
+{
+  "name" : "Elastic",
+  "location" : {
+    "state" : CG,
+    "pincode" : 492015
+  }
+}
+
+# A JSON document can have many field with values
+
+{
+  "name" : "Elastic",
+  ...
+  <field> : <value>
+}
+
+# Each value must be one of 6 types to be a valid JSON (string, number, object, array, boolean, null)
+# http://www.json.org/
+
+# Let's index a JSON document
+# Here we are using restaurant food safety violations from the city of San Francisco
+
+# This is the name of our index (inspection) type -> _doc
+
+POST /inspections/_doc
+{
+  "business_address": "660 Sacramento St",
+  "business_city": "San Francisco",
+  "business_id": "2218",
+  "business_lattitude": "37.793698",
+  "business_location": {
+    "type": "Point",
+    "coordinates": [
+      -122.403984,
+      37.793698
+    ]
+  },
+  "business_logitude": "-122.403984",
+  "business_name": "Tokyo Express",
+  "business_postal_code": "94111",
+  "business_state": "CA",
+  "inspection_date": "2016-02-04T00:00:00:000",
+  "inspection_id": "2228_20160204",
+  "inspection_type": "Routine",
+  "inspection_score": 96,
+  "risk_category": "Low Risk",
+  "violation_description": "Unclean nonfood contact surface",
+  "violation_id": "2228_20160204_103142"
+}
+
+# Let's search the index using a GET command
+
+GET /inspections/_search
+
+# Elasticsearch uses a REST API and it matters whether we use POST vs PUT
+# PUT requires an id for the document as part of the URL
+
+# So if we run the following we will get an error
+
+PUT /inspections/_doc
+{
+  "business_address": "660 Sacramento St",
+  "business_city": "San Francisco",
+  "business_id": "2228",
+  "business_lattitude": "37.793698",
+  "business_location": {
+    "type": "Point",
+    "coordinates": [
+      -122.403984,
+      37.793698
+    ]
+  },
+  "business_logitude": "-122.403984",
+  "business_name": "Tokyo Express",
+  "business_postal_code": "94111",
+  "business_state": "CA",
+  "inspection_date": "2016-02-04T00:00:00:000",
+  "inspection_id": "2228_20160204",
+  "inspection_type": "Routine",
+  "inspection_score": 96,
+  "risk_category": "Low Risk",
+  "violation_description": "Unclean nonfood contact surface",
+  "violation_id": "2228_20160204_103142"
+}
+
+# POST creates the document's ID for us
+
+POST /inspection/_doc
+{
+  "business_address": "660 Sacramento St",
+  "business_city": "San Francisco",
+  "business_id": "2228",
+  "business_lattitude": "37.793698",
+  "business_location": {
+    "type": "Point",
+    "coordinates": [
+      -122.403984,
+      37.793698
+    ]
+  },
+  "business_logitude": "-122.403984",
+  "business_name": "Tokyo Express",
+  "business_postal_code": "94111",
+  "business_state": "CA",
+  "inspection_date": "2016-02-04T00:00:00:000",
+  "inspection_id": "2228_20160204",
+  "inspection_type": "Routine",
+  "inspection_score": 96,
+  "risk_category": "Low Risk",
+  "violation_description": "Unclean nonfood contact surface",
+  "violation_id": "2228_20160204_103142"
+}
+
+# We can also specify it with PUT
+
+PUT /inspections/_doc/12345
+{
+  "business_address": "660 Sacramento St",
+  "business_city": "San Francisco",
+  "business_id": "2228",
+  "business_lattitude": "37.793698",
+  "business_location": {
+    "type": "Point",
+    "coordinates": [
+      -122.403984,
+      37.793698
+    ]
+  },
+  "business_logitude": "-122.403984",
+  "business_name": "Tokyo Express",
+  "business_postal_code": "94111",
+  "business_state": "CA",
+  "inspection_date": "2016-02-04T00:00:00:000",
+  "inspection_id": "2228_20160204",
+  "inspection_type": "Routine",
+  "inspection_score": 96,
+  "risk_category": "Low Risk",
+  "violation_description": "Unclean nonfood contact surface",
+  "violation_id": "2228_20160204_103142"
+}
+
+# Delete index
+
+DELETE /inspections
+
+# Instead of dynamically creating the index based on the first document we add, we can create the index beforehand to set certain settings
+
+PUT /inspections
+{
+  "settings": {
+    "index.number_of_shards": 1,
+    "index.number_of_replicas": 0
+  }
+}
+
+# We'll use 1 shard for this example and no replicas. We probably wouldn't want to do this in production
+
+# When we need to index a lot of docs, we should use the bulk API, which might give significant performance benefits
+
+# https://www.elastic.co/guide/en/elasticsearch/reference/current/docs-bulk.html
+# https://stackoverflow.com/questions/33340153/elasticsearch-bulk-index-json-data
+
+POST /inspections/_bulk
+{ "index": {"_id": 1}}
+{"business_address": "315 California St","business_city": "San Francisco","business_id": "24936","business_lattitude": "37.793199","business_location": {"type": "Point","coordinates": [-122.400152,37.793199]},"business_logitude": "-122.400152","business_name": "San Francisco Soup Company","business_postal_code": "94104","business_state": "CA","inspection_date": "2016-06-09T00:00:00:000","inspection_id": "24936_20160609","inspection_type": "Routine - Unshceduled","inspection_score": 77,"risk_category": "Low Risk","violation_description": "Improper food labelling","violation_id": "24936_20160609_103141"}
+{ "index": {"_id": 2}}
+{"business_address": "10 Mason St","business_city": "San Francisco","business_id": "60354","business_lattitude": "37.783527","business_location": {"type": "Point","coordinates": [-122.409061,37.782527]},"business_logitude": "-122.409061","business_name": "Soup Unlimited","business_postal_code": "94102","business_state": "CA","inspection_date": "2016-11-23T00:00:00:000","inspection_id": "60254_20161123","inspection_type": "Routine","inspection_score": 95}
+{ "index": {"_id": 3}}
+{"business_address": "801 Broadway St","business_city": "San Francisco","business_id": "835","business_lattitude": "37.797223","business_location": {"type": "Point","coordinates": [-122.4105131,37.797223]},"business_logitude": "-122.410513","business_name": "Kam Po Kitchen","business_postal_code": "94133","business_state": "CA","inspection_date": "2016-12-21T00:00:00:000","inspection_id": "835_20160917","inspection_type": "Routine - Unscheduled","inspection_score": 88,"risk_category": "Low Risk","violation_description": "Improper food storage","violation_id": "835_20160917_103139"}
+{ "index": {"_id": 4}}
+{"business_address": "1574 California St","business_city": "San Francisco","business_id": "1345","business_lattitude": "37.790683","business_location": {"type": "Point","coordinates": [-122.420264,37.790683]},"business_logitude": "-122.420264","business_name": "Cordon Bleu","business_postal_code": "94109","business_state": "CA","inspection_date": "2017-12-00T00:00:00:000","inspection_id": "1345_20170928","inspection_type": "Routine - Unscheduled","inspection_score": 81,"risk_category": "High Risk ","violation_description": "Improper cooling methods","violation_id": "1345_20170928_103105"}
+{ "index": {"_id": 5}}
+{"business_address": "2162 24th Ave","business_city": "San Francisco","business_id": "5794","business_lattitude": "37.747228","business_location": {"type": "Point","coordinates": [-122.481299,37.747228]},"business_logitude": "-122.481299","business_name": "Soup-or-Salad","business_postal_code": "94116","business_state": "CA","inspection_date": "2016-10-00T00:00:00:000","inspection_id": "5794_20160907","inspection_type": "Routine - Unscheduled","inspection_score": 96,"risk_category": "Low Risk ","violation_description": "Unapproved equipment","violation_id": "5794_20160907_103144"}
+{ "index": {"_id": 6}}
+{"business_address": "1611 Tennessee St","business_city": "San Francisco","business_id": "66198","business_lattitude": "37.75072","business_location": {"type": "Point","coordinates": [-122.388478,37.75072]},"business_logitude": "-122.388478","business_name": "San Francisco Restaurant","business_postal_code": "94107","business_state": "CA","inspection_date": "2016-05-27T00:00:00:000","inspection_id": "66198_20160527","inspection_type": "Routine","inspection_score": 56,"risk_category": "Low Risk ","violation_description": "Unapproved equipment","violation_id": "5794_20160907_103144"}
+
+# The primary term increments every time a different shard becomes primary during failover. This helps when resolving changes which occurred on old primaries which come back online vs. changes which occur on the new primary (the new wins)
+
+# We can list all indices like so
+
+GET _cat/indices
+ 
+# Let's go back to executing our basic search
+# Find *all* documents
+
+GET /inspections/_search
+
+# Let's find all inspection reports for places that sell soup
+
+GET /inspections/_search
+{
+  "query": {
+    "match": {
+      "business_name": "soup"
+    }
+  }
+}
+
+# Notice that soup is in lowercase whereas the docs all contain soup in uppercase
+
+# Let's look for restaurants with the name San Francisco
+# Since San Francisco is two words, we'll use match_phrase
+
+GET /inspections/_search
+{
+  "query": {
+    "match_phrase": {
+      "business_name": "san francisco"
+    }
+  }
+}
+
+# Results are ranked by 'relevance' (_score)
+# Lucene's Practical Scoring Function that uses a combination of tf-idf scoring and the vector space model
+# https://www.compose.com/articles/how-scoring-works-in-elasticsearch/
+
+# We can also do boolean combinations of queries
+# Let's find all docs with "soup" and "san francisco" in the business name
+
+GET /inspections/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "business_name": "soup"
+          }
+        },
+        {
+          "match_phrase": {
+            "business_name": "san francisco"
+          }
+        }
+      ]
+    }
+  }
+}
+
+# Or negate parts of a query, businesses without "soup" in the name (maybe you hate soup like me)
+
+GET /inspections/_search
+{
+  "query": {
+    "bool": {
+      "must_not": [
+        {
+          "match": {
+            "business_name": "soup"
+          }
+        }
+      ]
+    }
+  }
+}
+
+# must -> logical AND, must_not -> logical NOT, should -> logical OR
+
+# should means: If these clauses match, they increase the _score; otherwise, they have no effect.
+# They are simply used to refine the relevance score for each document.
+
+# Combinations can be boosted for different effects
+# Let's emphasize places with "soup in the name"
+
+GET /inspections/_search
+{
+  "query": {
+    "bool": {
+      "should": [
+        {
+          "match_phrase": {
+            "business_name": {
+              "query": "soup",
+              "boost": 3
+            }
+          }
+        },
+        {
+          "match_phrase": {
+            "business_name": {
+              "query": "san francisco"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+# Sometimes it's unclear what actually matched
+# We can highlight the matching fragments:
+
+GET /inspections/_search
+{
+  "query": {
+    "match": {
+      "business_name": "soup"
+    }
+  },
+  "highlight": {
+    "fields": {
+      "business_name": {}
+    }
+  }
+}
+
+# We can perform filtering, when we don't need text analysis or need to do exact matches, range queries, etc
+# Let's find soup companies with a health score greater than 80
+
+GET /inspections/_search
+{
+  "query": {
+    "range": {
+      "inspection_score": {
+        "gte": 80
+      }
+    }
+  },
+  "sort": [
+    { "inspection_score": "desc"}
+  ]
+}
+
+# We can execute basic SQL commands
+# Sample SQL query
+
+POST /_sql?format=txt
+{
+  "query": "SELECT business_name, inspection_score FROM inspections ORDER BY inspection_score DESC LIMIT 5"
+}
+
+# Geo search is another powerful tool for search 
+# Let's find soup restaurants closest to us (lets use a reasonable location)
+# Notice that we have lat long info in every document
+# Can we use that?
+
+# Let's use the following geo query to sort restaurants by distance from 'us'
+
+GET /inspections/_search
+{
+  "query": {
+    "match": { "business_name": "soup"}
+  },
+  "sort": [
+    {
+      "_geo_distance": {
+        "coordinates": {
+          "lat": 37.783527,
+          "lon": -122.409061
+       },
+      "order": "asc",
+      "unit": "km"
+     }
+    }
+    ]
+}
+
+# This does not work. Elasticsearch does not know the field is a geopoint
+# We must define this field as a geo point using mappings
+# Mappings are helpful for defining the structure of our document and more effciently storing and searching data within our index
+# Let's see what Elasticsearch thinks our mapping is
+
+GET /inspections/_mapping
+
+# Let's delete our index, change the mapping and recreate our index with bulk import
+# In production scenarios we might use the reindex API, with which we can add new mapping fields without needing to migrate the data
+
+DELETE inspections
+
+PUT /inspections
+
+PUT inspections/_mapping/
+{
+  "properties": {
+    "coordinates": {
+      "type": "geo_point"
+    }
+  }
+}
+
+# Add documents
+
+# Now let's see if it works
+
+GET /inspections/_search
+{
+  "query": {
+    "match": { "business_name": "soup"}
+  },
+  "sort": [
+    {
+      "_geo_distance": {
+        "coordinates": {
+          "lat": 37.783527,
+          "lon": -122.409061
+       },
+      "order": "asc",
+      "unit": "km"
+     }
+    }
+    ]
+}
+
+# Usually we would specify settings and mappings together like so 
+
+PUT text_index
+{
+  "settings": {
+    "number_of_shards": 1
+    , "number_of_replicas": 0
+  },
+  "mappings": {
+    "properties": {
+      "main_text":{
+        "type": "text"
+      }
+    }
+  }
+}
+
+POST text_index/_doc
+{
+  "main_text":  "quick brown fox jumps over the lazy dog"
+}
+
+
+
+
+# Text analysis enables Elasticsearch to perform full-text search, where the search returns all relevant results rather than just exact matches
+
+
+
+# Tokenization
+
+
+# Analysis makes full-text search possible through tokenization: breaking a text down into smaller chunks, called tokens. In most cases, these tokens are individual words.
+
+# If you index the phrase the quick brown fox jumps as a single string and the user searches for quick fox, it isn’t considered a match. However, if you tokenize the phrase and index each word separately, the terms in the query string can be looked up individually. This means they can be matched by searches for quick fox, fox brown, or other variations.
+
+
+
+
+# Normalization
+
+
+# Tokenization enables matching on individual terms, but each token is still matched literally. This means:
+
+# A search for Quick would not match quick, even though you likely want either term to match the other
+# Although fox and foxes share the same root word, a search for foxes would not match fox or vice versa.
+# A search for jumps would not match leaps. While they don’t share a root word, they are synonyms andhave a similar meaning.
+
+# To solve these problems, text analysis can normalize these tokens into a standard format. This allows you to match tokens that are not exactly the same as the search terms, but similar enough to still be relevant. For example:
+
+# Quick can be lowercased: quick.
+# foxes can be stemmed, or reduced to its root word: fox.
+# jump and leap are synonyms and can be indexed as a single word: jump.
+
+# To ensure search terms match these words as intended, you can apply the same tokenization and normalization rules to the query string. For example, a search for Foxes leap can be normalized to a search for fox jump
+
+# Text analysis is done by the analyze API
+# By default, queries will use the analyzer defined in the field mapping, but this can be overridden with the search_analyzer setting
+
+GET /_analyze
+{
+  "tokenizer": "whitespace",
+  "filter": ["lowercase"],
+  "char_filter": ["html_strip"],
+  "text": "THIS is a <b>test</b>"
+}
+
+# Character filters are used to preprocess the stream of characters before it is passed to the tokenizer
+# The built in html_strip character filter strips out HTML elements like <b> and decodes HTML entities like &amp;
+
+
+# The ngram filter forms n-grams of specified lengths from a token
+
+GET /_analyze
+{
+  "tokenizer": "standard",
+  "filter": ["ngram"],
+  "text": "Quick fox"
+}
+
+# default min_gram = 1 max_gram = 2
+
+PUT custom_ngram
+{
+  "settings": {
+    "index": {
+      "max_ngram_diff": 2
+    },
+    "analysis": {
+      "analyzer": {
+        "default":{
+          "tokenizer": "whitespace",
+          "filter": ["3_5_grams"]
+        }
+      },
+      "filter": {
+        "3_5_grams":{
+          "type": "ngram",
+          "min_gram": 3,
+          "max_gram": 5
+        }
+      }
+    }
+  }
+}
+
+# max_ngram_diff -> the maximum allowed difference between min_gram and max_gram for NGramTokenizer and NGramTokenFilter. Defaults to 1.
+
+# GET /custom_ngram/_search
+
+GET custom_ngram/_analyze
+{
+  "text": "Quick fox"
+}
+
+DELETE custom_ngram
+
+
+
+PUT custom_stop
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer":{
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "english_stop"
+            ]
+        }
+      },
+      "filter": {
+        "english_stop":{
+          "type": "stop",
+          "stopwords": ["the", "over"]
+        }
+      }
+    },
+    "number_of_shards": 1,
+    "number_of_replicas": 0
+  },
+  "mappings": {
+    "properties": {
+      "main_text": {
+        "type": "text",
+        "analyzer": "my_analyzer"
+      }
+    }
+  }
+}
+
+# The stop filter removes stop words from a token stream.
+
+# When not customized, the filter removes the following English stop words by default: a, an, and, are, as, at, be, but, by, for, if, in, into, is, it, no, not, of, on, or, such, that, the, their, then, there, these, they, this, to, was, will, with
+
+# We can also specify your own stop words as an array or file.
+
+POST custom_stop/_analyze
+{
+  "analyzer": "my_analyzer",
+  "text": "The quick brown fox jumped over the lazy brown dog"
+}
+
+DELETE custom_stop
+
