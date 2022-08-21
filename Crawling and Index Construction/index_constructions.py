@@ -180,7 +180,7 @@ def main():
     q3_links = links_20(q3)
 
     # Create a dictionary to store the inverted index
-    d = dict()
+    d = {}
 
     # Build the inverted index for the first query
 

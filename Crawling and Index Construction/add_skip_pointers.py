@@ -61,7 +61,7 @@ def add_skip_list(posting_list):
 def add_skip_pointers(inv_index):
 
     # Create a new index
-    re_index = dict()
+    re_index = {}
 
     # Traverse the index
     for i in inv_index:
