@@ -1,17 +1,13 @@
 # Complete the library import
 from json import dump, load
-
 from math import floor, sqrt
-
-from merging import check_valid, restrictive_order, solver
-
 from time import time
 
+from merging import check_valid, restrictive_order, solver
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
 from nltk.tokenize import word_tokenize
 
-from nltk.stem import PorterStemmer
-
-from nltk.corpus import stopwords
 
 # Obtain the inverted index from the json file
 def build_index(path):
@@ -21,6 +17,7 @@ def build_index(path):
 
         # Load the json file into a dictionary
         return load(json_file)
+
 
 # Add skip pointer list to the posting list
 def add_skip_list(posting_list):
@@ -44,7 +41,8 @@ def add_skip_list(posting_list):
         if pos_index == skip_index:
 
             # Add the skip pointer as a tuple to the corresponding docid
-            post_list_with_skips.append([posting_list[pos_index], skip_index + skip_period])
+            post_list_with_skips.append(
+                [posting_list[pos_index], skip_index + skip_period])
 
             # Move the skip pointer index forward
             skip_index += skip_period
@@ -56,6 +54,7 @@ def add_skip_list(posting_list):
 
     # Return the new list
     return post_list_with_skips
+
 
 # Given the initial inverted index, add the skip pointers to the posting lists
 def add_skip_pointers(inv_index):
@@ -74,6 +73,7 @@ def add_skip_pointers(inv_index):
 
     # Return the new index
     return re_index
+
 
 def without_skip_pointers(queries, inv_index):
 
@@ -125,10 +125,12 @@ def merge_with_skip_pointers(lis1, lis2):
         elif lis1[i][0] < lis2[j][0]:
 
             # Check for the skip pointer
-            if lis1[i][1] != 0 and lis1[i][1] < n1 and lis1[lis1[i][1]][0] <= lis2[j][0]:
+            if (lis1[i][1] != 0 and lis1[i][1] < n1
+                    and lis1[lis1[i][1]][0] <= lis2[j][0]):
 
                 # As long as we can find a skip pointer keep moving ahead
-                while lis1[i][1] != 0 and lis1[i][1] < n1 and lis1[lis1[i][1]][0] <= lis2[j][0]:
+                while (lis1[i][1] != 0 and lis1[i][1] < n1
+                       and lis1[lis1[i][1]][0] <= lis2[j][0]):
 
                     # Move the pointer forward to the next skip pointer
                     i = lis1[i][1]
@@ -141,10 +143,12 @@ def merge_with_skip_pointers(lis1, lis2):
         else:
 
             # Check for skip pointer
-            if lis2[j][1] != 0 and lis2[j][1] < n2 and lis2[lis2[j][1]][0] <= lis1[i][0]:
+            if (lis2[j][1] != 0 and lis2[j][1] < n2
+                    and lis2[lis2[j][1]][0] <= lis1[i][0]):
 
                 # As long as we can find a skip pointer keep moving ahead
-                while lis2[j][1] != 0 and lis2[j][1] < n2 and lis2[lis2[j][1]][0] <= lis1[i][0]:
+                while (lis2[j][1] != 0 and lis2[j][1] < n2
+                       and lis2[lis2[j][1]][0] <= lis1[i][0]):
 
                     # Move the pointer forward to the next skip pointer
                     j = lis2[j][1]
@@ -155,8 +159,10 @@ def merge_with_skip_pointers(lis1, lis2):
 
     return merged_list
 
+
 # Implement the function to process the order of the merging of query terms, takes query as input and dictionary
 # Implement the coordinator function that returns the final answer
+
 
 def solver_with_skip_pointers(q_keys, index):
 
@@ -178,17 +184,19 @@ def solver_with_skip_pointers(q_keys, index):
     # Check we have more than 2 query terms
     assert len(q_keys) > 2
 
-	# If we have more than 2 query terms, we need to merge the posting lists by the order of the smallest lists
+    # If we have more than 2 query terms, we need to merge the posting lists by the order of the smallest lists
 
-	# new_order is the list of keys in the order that is the most optimal
+    # new_order is the list of keys in the order that is the most optimal
     new_order = restrictive_order(q_keys, index)
 
     # Initialize the result list
-    current_res = merge_with_skip_pointers(index[new_order[0]], index[new_order[1]])
+    current_res = merge_with_skip_pointers(index[new_order[0]],
+                                           index[new_order[1]])
 
     # Iterate through the remaining query terms and merge the posting lists
     for i in range(2, len(new_order)):
-        current_res = merge_with_skip_pointers(current_res, index[new_order[i]])
+        current_res = merge_with_skip_pointers(current_res,
+                                               index[new_order[i]])
 
     # Return the result
     return current_res
@@ -214,6 +222,7 @@ def with_skip_pointers(queries, inv_index):
     # Return the average time of execution
     return (end_time - start_time) / 100
 
+
 # Extract the terms from the query
 def extract_query(query):
 
@@ -227,10 +236,12 @@ def extract_query(query):
     text_tokens = [word_tokenize(x) for x in low]
 
     # Initialize the stopwords and remove them
-    tokens_without_sw = [x for x in text_tokens if not x in stopwords.words('english')]
+    tokens_without_sw = [
+        x for x in text_tokens if not x in stopwords.words("english")
+    ]
 
     # Get the string from the list
-    tokens_without_sw = [''.join(i) for i in tokens_without_sw]
+    tokens_without_sw = ["".join(i) for i in tokens_without_sw]
 
     # Initialize the stemmer
     ps = PorterStemmer()
@@ -240,6 +251,7 @@ def extract_query(query):
 
     # As we have obtained the exact words, we can return the list
     return queries
+
 
 # Main function
 def main():
@@ -251,22 +263,32 @@ def main():
     re_index = add_skip_pointers(inv_index)
 
     # The new inverted index is the updated inverted index is stored in the file
-    print("Writing the inverted index with skip pointers to JSON file: inverted_index_with_skip_pointers.json")
+    print(
+        "Writing the inverted index with skip pointers to JSON file: inverted_index_with_skip_pointers.json"
+    )
 
     # Write the updated inverted index to the file
     with open("inverted_index_with_skip_pointers.json", "w") as f:
         dump(re_index, f)
 
     # The queries are stored in a list
-    given_queries = ["predators AND ferocious", "fishes AND cats", "wild AND dogs"]
+    given_queries = [
+        "predators AND ferocious", "fishes AND cats", "wild AND dogs"
+    ]
 
     # Extract the query terms
     queries = [extract_query(query) for query in given_queries]
 
-    print("The Execution Time for the queries without the skip pointers when averaged to 100 iterations (in seconds) is:", without_skip_pointers(queries, inv_index))
+    print(
+        "The Execution Time for the queries without the skip pointers when averaged to 100 iterations (in seconds) is:",
+        without_skip_pointers(queries, inv_index),
+    )
 
-    print("The Execution Time for the queries with the skip pointers when averaged to 100 iterations (in seconds) is:", with_skip_pointers(queries, re_index))
+    print(
+        "The Execution Time for the queries with the skip pointers when averaged to 100 iterations (in seconds) is:",
+        with_skip_pointers(queries, re_index),
+    )
+
 
 if __name__ == "__main__":
-	main()
-
+    main()
