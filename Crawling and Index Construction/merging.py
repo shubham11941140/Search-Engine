@@ -64,14 +64,7 @@ def merge_ps(lis_1,lis_2):
 def check_valid(q_keys,index):
 
 	# Iterate through the keys
-	for key in q_keys:
-
-		# Check if the key exists in the inverted index
-		if key not in index:
-			return False
-
-	# All keys exist in the inverted index
-	return True
+	return all(not key not in index for key in q_keys)
 
 # Implement the function to process the order of the merging of query terms, takes query as input and dictionary
 # Implement the coordinator function that returns the final answer
