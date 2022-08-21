@@ -41,8 +41,7 @@ def add_skip_list(posting_list):
         if pos_index == skip_index:
 
             # Add the skip pointer as a tuple to the corresponding docid
-            post_list_with_skips.append(
-                [item, skip_index + skip_period])
+            post_list_with_skips.append([item, skip_index + skip_period])
 
             # Move the skip pointer index forward
             skip_index += skip_period
