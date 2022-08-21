@@ -16,7 +16,7 @@ nltk.download("stopwords")
 
 # Generate the links for the top 20 Wikipedia articles based on the search query
 def links_20(query):
-    return [i for i in search(query, num=20, stop=20, pause=2)]
+    return list(search(query, num=20, stop=20, pause=2))
 
 
 # function to extract html document from given url

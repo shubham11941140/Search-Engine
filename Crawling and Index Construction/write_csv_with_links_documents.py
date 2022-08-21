@@ -1,10 +1,13 @@
 # Generate the links for the top 20 Wikipedia articles based on the search query
 
 import csv
+
 from googlesearch import search
 
+
 def links_20(query):
-    return [i for i in search(query, num = 20, stop = 20, pause = 2)]
+    return list(search(query, num=20, stop=20, pause=2))
+
 
 def main():
 
@@ -19,9 +22,9 @@ def main():
     q3_links = links_20(q3)
 
     # Open a CSV file to write the results
-    f = open('Description.csv', 'w')
+    f = open("Description.csv", "w")
     writer = csv.writer(f)
-    writer.writerow(['Query', 'File Name', 'Doc ID', 'Link'])
+    writer.writerow(["Query", "File Name", "Doc ID", "Link"])
 
     # Create a dictionary to store the inverted index
     # d = dict()
@@ -35,10 +38,10 @@ def main():
         f_name = "d" + str(idx + 1) + "_q1" + ".txt"
 
         # Get the first 3 paragraphs for the particular URL and store it onto a file
-        #get_first_3(link, f_name)
+        # get_first_3(link, f_name)
 
         # Read the file contents and store the contents into the inverted index corresponding the docid
-        #inv_index(d, f_name, idx + 1)
+        # inv_index(d, f_name, idx + 1)
 
         writer.writerow([q1, f_name, idx + 1, link])
 
@@ -51,11 +54,11 @@ def main():
         f_name = "d" + str(idx + 1) + "_q2" + ".txt"
 
         # Get the first 3 paragraphs for the particular URL and store it onto a file
-        #get_first_3(link, f_name)
+        # get_first_3(link, f_name)
 
         # Read the file contents and store the contents into the inverted index corresponding the docid
         # Since 20 documents are already stored, we need to start from 21
-        #inv_index(d, f_name, 20 + idx + 1)
+        # inv_index(d, f_name, 20 + idx + 1)
 
         writer.writerow([q2, f_name, 20 + idx + 1, link])
 
@@ -74,5 +77,6 @@ def main():
         # inv_index(d, f_name, 20 + 20 + idx + 1)
 
         writer.writerow([q3, f_name, 40 + idx + 1, link])
+
 
 main()
