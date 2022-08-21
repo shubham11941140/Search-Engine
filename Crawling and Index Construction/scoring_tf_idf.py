@@ -162,9 +162,7 @@ def inverseDocumentFrequency(term, allDocs, total_docs=60):
         # Calculating the IDF and returning it
         idf_val = log(float(total_docs) / num_docs_with_given_term)
         return idf_val
-
-    else:
-        return 0
+    return 0
 
 
 # Calculate the tf-idf score of a term in a document
