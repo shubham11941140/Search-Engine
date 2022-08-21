@@ -35,14 +35,14 @@ def add_skip_list(posting_list):
     skip_index = skip_period - 1
 
     # Traverse the list
-    for pos_index in range(len(posting_list)):
+    for pos_index, item in enumerate(posting_list):
 
         # If we can place a skip pointer, even spaced index is reached
         if pos_index == skip_index:
 
             # Add the skip pointer as a tuple to the corresponding docid
             post_list_with_skips.append(
-                [posting_list[pos_index], skip_index + skip_period])
+                [item, skip_index + skip_period])
 
             # Move the skip pointer index forward
             skip_index += skip_period
@@ -50,7 +50,7 @@ def add_skip_list(posting_list):
         else:
 
             # Add the docid to the list
-            post_list_with_skips.append([posting_list[pos_index], 0])
+            post_list_with_skips.append([item, 0])
 
     # Return the new list
     return post_list_with_skips
