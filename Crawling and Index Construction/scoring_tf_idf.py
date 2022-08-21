@@ -122,7 +122,6 @@ def termFrequency(term, doc):
     Return: Normalized tf: Number of times term occurs
     in document/Total number of terms in the document
     """
-
     # Number of times the term occurs in the document
     term_in_document = doc.count(term)
 
