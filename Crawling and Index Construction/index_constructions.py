@@ -1,21 +1,23 @@
 # Complete all the necessary imports
 
+from json import dump
+
+import nltk
 from bs4 import BeautifulSoup
 from googlesearch import search
 from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 from nltk.stem import PorterStemmer
-from json import dump
+from nltk.tokenize import word_tokenize
 from requests import get
 
-import nltk
-
 # Download the stopwords to be checked before creating the posting list
-nltk.download('stopwords')
+nltk.download("stopwords")
+
 
 # Generate the links for the top 20 Wikipedia articles based on the search query
 def links_20(query):
-    return [i for i in search(query, num = 20, stop = 20, pause = 2)]
+    return [i for i in search(query, num=20, stop=20, pause=2)]
+
 
 # function to extract html document from given url
 def getHTMLdocument(url):
@@ -25,6 +27,7 @@ def getHTMLdocument(url):
     # response will be provided in JSON format
     return get(url).text
 
+
 # Get the first 3 paragraphs for the particular URL and store it onto a file
 def get_first_3(url_to_scrape, file_name):
 
@@ -32,7 +35,7 @@ def get_first_3(url_to_scrape, file_name):
     html_document = getHTMLdocument(url_to_scrape)
 
     # create soap object
-    soup = BeautifulSoup(html_document, 'html.parser')
+    soup = BeautifulSoup(html_document, "html.parser")
 
     # Open the file to write the result onto
     f = open(file_name, "w")
@@ -59,15 +62,17 @@ def get_first_3(url_to_scrape, file_name):
     # Writing is done, close the file
     f.close()
 
+
 # Check if a string is a number
 def is_number(s):
     return s.isnumeric()
+
 
 # Add the particular docid
 def inv_index(d, file_name, docid):
 
     # Open the file
-    file = open(file_name, encoding='utf8')
+    file = open(file_name, encoding="utf8")
 
     # Read the file
     read = file.read()
@@ -76,13 +81,13 @@ def inv_index(d, file_name, docid):
     file.seek(0)
 
     # Count the number of lines in the file
-    line = len([1 for word in read if word == '\n'])
+    line = len([1 for word in read if word == "\n"])
 
     # Create a list to store each line as an element of list
     array = [file.readline() for _ in range(line)]
 
     # Define the punctuations
-    punc = '''!()-[]{};:'"\, <>./?@#$%^&*_~'''
+    punc = """!()-[]{};:'"\, <>./?@#$%^&*_~"""
 
     # Remove all the punctuations from the file
     for ele in read:
@@ -96,7 +101,9 @@ def inv_index(d, file_name, docid):
     text_tokens = word_tokenize(read)
 
     # Remove all the stopwords from the tokens
-    tokens_without_sw = [word for word in text_tokens if not word in stopwords.words('english')]
+    tokens_without_sw = [
+        word for word in text_tokens if not word in stopwords.words("english")
+    ]
 
     # Initialize the stemmer
     ps = PorterStemmer()
@@ -129,6 +136,7 @@ def inv_index(d, file_name, docid):
                             # Add the docid to the current posting list
                             d[item].append(docid)
 
+
 def least_used_terms(d):
 
     # Sort by length of the posting list
@@ -148,10 +156,11 @@ def least_used_terms(d):
         if c == 3:
             return
 
+
 def most_used_terms(d):
 
     # Sort by length of the posting list in reverse order of the length
-    sd = dict(sorted(d.items(), reverse = True, key=lambda item: len(item[1])))
+    sd = dict(sorted(d.items(), reverse=True, key=lambda item: len(item[1])))
 
     # Return the top 3 results that come in the dictionary
     c = 0
@@ -167,6 +176,7 @@ def most_used_terms(d):
         if c == 3:
             return
 
+
 def main():
 
     # Queries
@@ -180,7 +190,7 @@ def main():
     q3_links = links_20(q3)
 
     # Create a dictionary to store the inverted index
-    d = dict()
+    d = {}
 
     # Build the inverted index for the first query
 
@@ -233,12 +243,17 @@ def main():
         dump(d, outfile)
 
     # Printing the posting list of the 3 most commonly used terms in the inverted index
-    print("The Posting list of the 3 most commonly used terms in the inverted index")
+    print(
+        "The Posting list of the 3 most commonly used terms in the inverted index"
+    )
     most_used_terms(d)
 
     # Printing the posting list of the 3 least commonly used terms in the inverted index
-    print("The Posting list of the 3 least commonly used terms in the inverted index")
+    print(
+        "The Posting list of the 3 least commonly used terms in the inverted index"
+    )
     least_used_terms(d)
 
+
 if __name__ == "__main__":
-	main()
+    main()
