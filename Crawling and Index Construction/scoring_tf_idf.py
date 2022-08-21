@@ -39,7 +39,7 @@ def preprocess_document(alldocs, file_name, docid):
     array = [file.readline() for _ in range(line)]
 
     # Define the punctuations
-    punc = '''!()-[]{};:'"\, <>./?@#$%^&*_~'''
+    punc = r'''!()-[]{};:'"\, <>./?@#$%^&*_~'''
 
     # Remove all the punctuations from the file
     for ele in read:
