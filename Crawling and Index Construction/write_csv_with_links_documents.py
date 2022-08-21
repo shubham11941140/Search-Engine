@@ -4,7 +4,7 @@ import csv
 from googlesearch import search
 
 def links_20(query):
-    return [i for i in search(query, num = 20, stop = 20, pause = 2)]
+    return list(search(query, num = 20, stop = 20, pause = 2))
 
 def main():
 
